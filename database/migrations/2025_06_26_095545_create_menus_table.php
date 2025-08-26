@@ -18,6 +18,8 @@ class CreateMenusTable extends Migration
                 ->onDelete('cascade');
             $table->string('name', 150);
             $table->text('description')->nullable();
+            $table->enum('category', ['Halal', 'Vegan'])->default('Halal');
+            $table->string('image')->nullable();
             $table->decimal('price', 8, 2);
             $table->boolean('is_available')->default(true);
             $table->unsignedInteger('sort_id')->default(0)->index();

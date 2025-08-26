@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Restaurant extends Model
 {
+    protected $table = 'restaurants';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -13,6 +15,8 @@ class Restaurant extends Model
      */
     protected $fillable = [
         'name',
+        'image',
+        'city',
         'type',
         'phone_number',
         'address',
@@ -38,5 +42,10 @@ class Restaurant extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
     }
 }

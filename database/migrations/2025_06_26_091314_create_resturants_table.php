@@ -17,7 +17,10 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
-            $table->string('type', 100)->nullable();
+            $table->string('image')->nullable();
+            $table->string('city', 100)->index();
+            $table->enum('type', ['Halal', 'Vegan'])->default('Halal');
+            $table->string('location', 100);
             $table->string('phone_number', 20)->unique();
             $table->string('address')->nullable();
             $table->string('email')->nullable()->unique();
