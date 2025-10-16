@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources\Menus\Tables;
 
 use Filament\Actions\BulkActionGroup;
@@ -8,6 +7,8 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Illuminate\Support\Facades\Storage;
 use Filament\Tables\Table;
 
 class MenusTable
@@ -21,6 +22,15 @@ class MenusTable
                     ->sortable(),
                 TextColumn::make('name')
                     ->searchable(),
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->getStateUsing(function ($record) {
+                        return $record->image
+                            ? Storage::disk('s3')->url($record->image)
+                            : null;
+                    })
+                    ->size(50)
+                    ->circular(),
                 TextColumn::make('price')
                     ->money()
                     ->sortable(),

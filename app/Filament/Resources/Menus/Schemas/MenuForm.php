@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Menus\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -18,6 +19,17 @@ class MenuForm
                     ->numeric(),
                 TextInput::make('name')
                     ->required(),
+                FileUpload::make('image')
+                    ->label('Image / Logo')
+                    ->required()
+                    ->disk('s3')
+                    ->directory('logo')
+                    ->previewable(true)
+                    ->image()
+                    ->visibility('public')
+                    ->getUploadedFileNameForStorageUsing(fn ($file) =>
+                        time() . '-' . $file->getClientOriginalName()
+                    ),
                 Textarea::make('description')
                     ->columnSpanFull(),
                 TextInput::make('price')
