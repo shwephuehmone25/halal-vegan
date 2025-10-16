@@ -18,6 +18,7 @@ class Restaurant extends Model
         'image',
         'city',
         'type',
+        'location',
         'phone_number',
         'address',
         'email',
