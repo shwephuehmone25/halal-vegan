@@ -1,18 +1,29 @@
 FROM php:8.2-fpm
 
-# Install system dependencies & PHP extensions
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev libpq-dev zip unzip nginx \
-    && docker-php-ext-install pdo pdo_pgsql mbstring exclam bcmath gd
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libpq-dev \
+    zip \
+    unzip \
+    nginx \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js & Yarn for frontend builds
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_pgsql bcmath gd exif
+
+# Install Node.js & Yarn for frontend assets
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && corepack enable
 
 WORKDIR /var/www/html
 
-# Copy application code
+# Copy project files
 COPY . .
 
 # Install Composer dependencies
@@ -22,6 +33,6 @@ RUN composer install --no-dev --optimize-autoloader
 # Build frontend assets
 RUN yarn install && yarn build
 
-# Configure Nginx & startup
 EXPOSE 80
+
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80
