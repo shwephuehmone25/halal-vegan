@@ -38,4 +38,4 @@ RUN yarn install && yarn build
 
 EXPOSE 80
 
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80
+CMD php artisan storage:link && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80
