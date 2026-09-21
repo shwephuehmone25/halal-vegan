@@ -21,20 +21,10 @@ class DashboardOverview extends StatsOverviewWidget
 
     protected function getStats(): array
     {
-        $restaurantCounts = Restaurant::query()
-            ->selectRaw('COUNT(*) as total')
-            ->selectRaw('SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active')
-            ->first();
-
-        $menuCounts = Menu::query()
-            ->selectRaw('COUNT(*) as total')
-            ->selectRaw('SUM(CASE WHEN is_available = 1 THEN 1 ELSE 0 END) as available')
-            ->first();
-
-        $totalRestaurants = (int) ($restaurantCounts?->total ?? 0);
-        $activeRestaurants = (int) ($restaurantCounts?->active ?? 0);
-        $totalMenus = (int) ($menuCounts?->total ?? 0);
-        $availableMenus = (int) ($menuCounts?->available ?? 0);
+        $totalRestaurants = Restaurant::query()->count();
+        $activeRestaurants = Restaurant::query()->where('is_active', true)->count();
+        $totalMenus = Menu::query()->count();
+        $availableMenus = Menu::query()->where('is_available', true)->count();
 
         return [
             Stat::make('Total Restaurants', number_format($totalRestaurants))
