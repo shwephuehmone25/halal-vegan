@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     nginx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install required PHP extensions (including intl and zip)
+# Install required PHP extensions
 RUN docker-php-ext-configure intl \
     && docker-php-ext-install pdo pdo_pgsql bcmath gd exif intl zip
 
@@ -36,6 +36,10 @@ RUN composer install --no-dev --optimize-autoloader
 # Build frontend assets
 RUN yarn install && yarn build
 
+# Set permissions for Laravel
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
 EXPOSE 80
 
-CMD php artisan storage:link && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80
+# Single combined startup command
+CMD ["sh", "-c", "php artisan storage:link && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=80"]
