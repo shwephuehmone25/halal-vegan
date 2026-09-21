@@ -55,7 +55,7 @@
         </nav>
 
         <!-- Page Header Start -->
-        <div class="container-fluid page-header mb-5 position-relative overlay-bottom" style="background-image: url('{{ asset($restaurant->image) }}');">
+        <div class="container-fluid page-header mb-5 position-relative overlay-bottom" style="background-image: url('{{ $restaurant->image_url }}'), url('{{ asset('img/restaurant-placeholder.svg') }}');">
             <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5"
                 style="min-height: 400px;">
                 <h1 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase">Menu</h1>
@@ -87,7 +87,7 @@
                                     <div class="col-4 col-sm-3">
                                         @if ($menu->image)
                                             <img class="w-100 rounded-circle mb-3 mb-sm-0"
-                                                src="{{ asset($menu->image) }}" alt="{{ $menu->name }}">
+                                                src="{{ $menu->image_url }}" alt="{{ $menu->name }}">
                                         @else
                                             <img class="w-100 rounded-circle mb-3 mb-sm-0"
                                                 src="{{ asset('img/default-food.jpg') }}" alt="{{ $menu->name }}">

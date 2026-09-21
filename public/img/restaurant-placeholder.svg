@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Restaurant">
+    <rect width="128" height="128" rx="24" fill="#fff7ed"/>
+    <path fill="#f59e0b" d="M28 48h72l-6-22H34l-6 22Zm5 6v43h62V54a14 14 0 0 1-20 0 14 14 0 0 1-22 0 14 14 0 0 1-20 0Zm13 15h17v28H46V69Zm27 0h12v13H73V69Z"/>
+</svg>

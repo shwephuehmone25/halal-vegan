@@ -5,7 +5,6 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Storage;
 
 class RestaurantInfolist
 {
@@ -16,11 +15,11 @@ class RestaurantInfolist
                 TextEntry::make('name'),
                 ImageEntry::make('image')
                     ->label('Logo')
-                    ->getStateUsing(function ($record) {
-                        return $record->image
-                            ? Storage::disk('s3')->url($record->image)
-                            : null;
-                    }),
+                    ->getStateUsing(fn ($record) => $record->image_url)
+                    ->defaultImageUrl(asset('img/restaurant-placeholder.svg'))
+                    ->extraImgAttributes([
+                        'onerror' => "this.onerror=null;this.src='".asset('img/restaurant-placeholder.svg')."';",
+                    ]),
                 TextEntry::make('city'),
                 TextEntry::make('type'),
                 TextEntry::make('location'),

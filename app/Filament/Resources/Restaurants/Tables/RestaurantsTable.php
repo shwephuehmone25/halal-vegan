@@ -10,7 +10,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 
 class RestaurantsTable
 {
@@ -22,11 +21,11 @@ class RestaurantsTable
                     ->searchable(),
                 ImageColumn::make('image')
                     ->label('Logo')
-                    ->getStateUsing(function ($record) {
-                        return $record->image
-                            ? Storage::disk('s3')->url($record->image)
-                            : null;
-                    })
+                    ->getStateUsing(fn ($record) => $record->image_url)
+                    ->defaultImageUrl(asset('img/restaurant-placeholder.svg'))
+                    ->extraImgAttributes([
+                        'onerror' => "this.onerror=null;this.src='".asset('img/restaurant-placeholder.svg')."';",
+                    ])
                     ->size(50)
                     ->circular(),
                 TextColumn::make('city')

@@ -21,7 +21,7 @@ class RestaurantForm
                 FileUpload::make('image')
                     ->label('Image / Logo')
                     ->required()
-                    ->disk('s3')
+                    ->disk(config('filesystems.media'))
                     ->directory('logo')
                     ->previewable(true)
                     ->image()

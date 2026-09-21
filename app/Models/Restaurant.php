@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Restaurant extends Model
 {
@@ -48,5 +49,25 @@ class Restaurant extends Model
     public function menus()
     {
         return $this->hasMany(Menu::class);
+    }
+
+    /**
+     * Resolve both bundled public images and images uploaded to S3.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            return $this->image;
+        }
+
+        if (is_file(public_path($this->image))) {
+            return asset($this->image);
+        }
+
+        return Storage::disk(config('filesystems.media'))->url($this->image);
     }
 }

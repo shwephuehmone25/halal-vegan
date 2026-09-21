@@ -8,7 +8,6 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Illuminate\Support\Facades\Storage;
 use Filament\Tables\Table;
 
 class MenusTable
@@ -24,11 +23,7 @@ class MenusTable
                     ->searchable(),
                 ImageColumn::make('image')
                     ->label('Image')
-                    ->getStateUsing(function ($record) {
-                        return $record->image
-                            ? Storage::disk('s3')->url($record->image)
-                            : null;
-                    })
+                    ->getStateUsing(fn ($record) => $record->image_url)
                     ->size(50)
                     ->circular(),
                 TextColumn::make('price')

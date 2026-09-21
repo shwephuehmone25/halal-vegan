@@ -297,7 +297,8 @@
                                 onclick="window.location.href='{{ route('restaurants.show', $restaurant->id) }}'"
                                 style="cursor: pointer;">
 
-                                <img class="img-fluid rounded-3 h-100" src="{{ Storage::disk('s3')->url($restaurant->image) }}"
+                                <img class="img-fluid rounded-3 h-100" src="{{ $restaurant->image_url }}"
+                                    onerror="this.onerror=null;this.src='{{ asset('img/restaurant-placeholder.svg') }}';"
                                     alt="{{ $restaurant->name }}" />
 
                                 <div class="card-img-overlay ps-0">
